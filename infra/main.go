@@ -52,7 +52,7 @@ func deployCIServiceAccount(ctx *pulumi.Context) error {
 		return err
 	}
 
-	_, err = iam.NewWorkloadIdentityPoolProvider(ctx, "example", &iam.WorkloadIdentityPoolProviderArgs{
+	_, err = iam.NewWorkloadIdentityPoolProvider(ctx, "github-actions", &iam.WorkloadIdentityPoolProviderArgs{
 		WorkloadIdentityPoolId:         pool.WorkloadIdentityPoolId,
 		WorkloadIdentityPoolProviderId: gha,
 		AttributeMapping: pulumi.StringMap{
