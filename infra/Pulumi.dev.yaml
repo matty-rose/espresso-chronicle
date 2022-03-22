@@ -1,2 +1,3 @@
 config:
+  espresso-chronicle:region: australia-southeast1
   gcp:project: espressolog
