@@ -1,6 +1,10 @@
 name: Pulumi
 on:
   - pull_request
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
 jobs:
   infra-preview:
     name: Preview Infra
