@@ -19,8 +19,8 @@ repos:
   - id: check-merge-conflict
   - id: end-of-file-fixer
   - id: trailing-whitespace
-- repo: https://github.com/golangci/golangci-lint
-  rev: v1.45.0
-  hooks:
-    - id: golangci-lint
-      verbose: true
+# - repo: https://github.com/golangci/golangci-lint
+#   rev: v1.45.0
+#   hooks:
+#     - id: golangci-lint
+#       verbose: true
