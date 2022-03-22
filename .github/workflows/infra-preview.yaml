@@ -1,0 +1,27 @@
+name: Pulumi
+on:
+  - pull_request
+jobs:
+  infra-preview:
+    name: Preview Infra
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.18.x
+      - name: Authenticate to Google Cloud
+        id: gcp-auth
+        uses: google-github-actions/auth@v0.6.0
+        with:
+          workload_identity_provider: ${{ secrets.OIDC_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+      - run: go mod download
+        working-directory: infra
+      - uses: pulumi/actions@v3
+        with:
+          command: preview
+          stack-name: dev
+          work-dir: infra
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
