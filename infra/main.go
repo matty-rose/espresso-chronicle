@@ -43,7 +43,7 @@ func deployCIServiceAccount(ctx *pulumi.Context) error {
 		return err
 	}
 
-	gha := pulumi.String("github-actions")
+	gha := pulumi.String("cicd")
 
 	pool, err := iam.NewWorkloadIdentityPool(ctx, "github-actions", &iam.WorkloadIdentityPoolArgs{
 		WorkloadIdentityPoolId: gha,
