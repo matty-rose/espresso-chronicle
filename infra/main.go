@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/appengine"
+	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/artifactregistry"
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/iam"
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/projects"
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/serviceaccount"
@@ -85,6 +86,32 @@ func deployCIServiceAccount(ctx *pulumi.Context) error {
 	return nil
 }
 
+func deployFirestore(ctx *pulumi.Context, config *config.Config) error {
+	_, err := appengine.NewApplication(ctx, formatName(ctx, "db"), &appengine.ApplicationArgs{
+		Project:      pulumi.String(ProjectId),
+		LocationId:   pulumi.String(config.Require("region")),
+		DatabaseType: pulumi.String("CLOUD_FIRESTORE"),
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func deployAPIArtifactRegistry(ctx *pulumi.Context, config *config.Config) error {
+	_, err := artifactregistry.NewRepository(ctx, "api", &artifactregistry.RepositoryArgs{
+		Location:     pulumi.String(config.Require("region")),
+		RepositoryId: pulumi.String("api"),
+		Format:       pulumi.String("DOCKER"),
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 		// Get stack specific configuration
@@ -97,11 +124,13 @@ func main() {
 		}
 
 		// Create the Firestore database
-		_, err = appengine.NewApplication(ctx, formatName(ctx, "db"), &appengine.ApplicationArgs{
-			Project:      pulumi.String(ProjectId),
-			LocationId:   pulumi.String(config.Require("region")),
-			DatabaseType: pulumi.String("CLOUD_FIRESTORE"),
-		})
+		err = deployFirestore(ctx, config)
+		if err != nil {
+			return err
+		}
+
+		// Create Docker artifact registry for API
+		err = deployAPIArtifactRegistry(ctx, config)
 		if err != nil {
 			return err
 		}
