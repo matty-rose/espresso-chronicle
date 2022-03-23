@@ -1,13 +1,11 @@
-name: Pulumi Preview
+name: Pulumi Up
 on:
-  - pull_request
-permissions:
-  contents: read
-  id-token: write
-  pull-requests: write
+  push:
+    branches:
+      - main
 jobs:
-  infra-preview:
-    name: Preview Infra
+  infra-update:
+    name: Update Infra
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,7 +22,7 @@ jobs:
         working-directory: infra
       - uses: pulumi/actions@v3
         with:
-          command: preview
+          command: up
           stack-name: dev
           work-dir: infra
         env:
