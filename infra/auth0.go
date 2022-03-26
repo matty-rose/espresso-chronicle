@@ -8,7 +8,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )
 
-func deployAuth0Application(ctx *pulumi.Context, config *config.Config) (*pulumi.StringArrayOutput, error) {
+func deployAuth0Application(ctx *pulumi.Context, config *config.Config) (*pulumi.StringOutput, error) {
 	client, err := auth0.NewClient(ctx, formatName(ctx, fmt.Sprintf("auth0-%s", "app")), &auth0.ClientArgs{
 		AppType:                 pulumi.String("spa"),
 		IsFirstParty:            pulumi.Bool(true),
@@ -19,7 +19,7 @@ func deployAuth0Application(ctx *pulumi.Context, config *config.Config) (*pulumi
 		return nil, err
 	}
 
-	return (*pulumi.StringArrayOutput)(&client.ClientId), nil
+	return &client.ClientId, nil
 }
 
 func deployAuth0SocialConnections(ctx *pulumi.Context, config *config.Config, clients *pulumi.StringArrayOutput) error {
