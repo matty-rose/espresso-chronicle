@@ -22,8 +22,14 @@ func main() {
 		// Get stack specific configuration
 		config := config.New(ctx, ProjectName)
 
+		// Create Auth0 Resources
+		err := deployAuth0SocialConnections(ctx, config)
+		if err != nil {
+			return err
+		}
+
 		// Create the deployment identity
-		err := deployCIServiceAccount(ctx)
+		err = deployCIServiceAccount(ctx)
 		if err != nil {
 			return err
 		}
