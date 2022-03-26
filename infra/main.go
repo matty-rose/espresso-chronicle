@@ -28,7 +28,9 @@ func main() {
 			return err
 		}
 
-		err = deployAuth0SocialConnections(ctx, config, clientID)
+		clientIDArray := pulumi.ToStringArrayOutput([]pulumi.StringOutput{*clientID})
+
+		err = deployAuth0SocialConnections(ctx, config, &clientIDArray)
 		if err != nil {
 			return err
 		}
