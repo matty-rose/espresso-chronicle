@@ -1,3 +1,4 @@
 config:
+  auth0:domain: espressolog.au.auth0.com
   espresso-chronicle:region: australia-southeast1
   gcp:project: espressolog
