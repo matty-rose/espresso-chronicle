@@ -23,7 +23,12 @@ func main() {
 		config := config.New(ctx, ProjectName)
 
 		// Create Auth0 Resources
-		err := deployAuth0SocialConnections(ctx, config)
+		clientID, err := deployAuth0Application(ctx, config)
+		if err != nil {
+			return err
+		}
+
+		err = deployAuth0SocialConnections(ctx, config, clientID)
 		if err != nil {
 			return err
 		}
