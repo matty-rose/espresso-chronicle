@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: .
+      target: dev
+    depends_on:
+      - firestore
+    ports:
+      - 8000:8000
+    volumes:
+      - ./app:/go/src/github.com/matty-rose/espresso-chronicle/api/app
+  firestore:
+    build:
+      context: .
+      dockerfile: firestore.Dockerfile
+    ports:
+      - 4000:4000
+      - 8080:8080
+    volumes:
+      - ~/.cache/firebase/emulators/:/app/.cache/firebase/emulators/
